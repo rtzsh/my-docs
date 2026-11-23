@@ -5,7 +5,7 @@
 
 ## 1. 基本信息
 
-- 姓名：`【待填：姓名拼音，与 Issue 标题一致】`
+- 姓名：王陈业（WangChenye）
 - GitHub 登录名：`【待填】`
 - 个人仓库地址：https://github.com/rtzsh/my-docs
 - 最终网站地址：https://rtzsh.github.io/my-docs/
