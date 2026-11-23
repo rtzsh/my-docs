@@ -38,3 +38,5 @@ cd my-docs
 python -m pip install -r requirements.txt
 python -m mkdocs serve
 ```
+
+自动部署验证：这是我第二次推送后更新的内容。
