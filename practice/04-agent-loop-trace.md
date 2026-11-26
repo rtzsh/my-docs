@@ -9,6 +9,10 @@
 
 文件：`packages/agent/src/agent-loop.ts`
 
+**如实说明**：我克隆小组仓库时，这两行 `[P4]` 日志**已经存在**（应该是组内同学先加了，
+提交号 `b13deed`），我没有重复添加，而是核对位置、重新编译并用两次会话验证它们确实生效。
+下面按作业要求标出插入位置，方便核对。
+
 **注意行号差异**：作业文档写的是第 412 行和 284 行，我们小组版本里
 `streamFunction` 在 **414** 行（`console.error` 插在 413），`currentContext.messages.push(result)`
 仍在 **284** 行（`console.error` 插在 285）。这是小组 fork 与教师版本的小差异，按搜索语句定位即可。
