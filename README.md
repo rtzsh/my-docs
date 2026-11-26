@@ -4,6 +4,7 @@
 
 - 网站地址：https://rtzsh.github.io/my-docs/
 - 实验报告：[个人实验报告](report/README.md)
+- Pi Agent 实践课 1-5：[实践课作业](practice/README.md)
 - 作者：rtzsh
 
 ## 项目简介
