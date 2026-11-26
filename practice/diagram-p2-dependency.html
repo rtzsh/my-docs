@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; background: #ffffff; font-family: "Microsoft YaHei", sans-serif; }
+  h3 { font-size: 20px; margin: 0 0 12px 0; color: #222; }
+</style>
+</head>
+<body>
+<h3>Pi 仓库 11 个子模块的层级与依赖关系（箭头：使用方 → 被依赖方）</h3>
+<pre class="mermaid">
+graph LR
+    subgraph L4["应用层"]
+        CA["coding-agent<br/>CLI 产品"]
+        ENV["env<br/>远程执行环境"]
+    end
+    subgraph L3["运行时层"]
+        AG["agent<br/>Agent 循环"]
+        DU["durable<br/>持久化运行时"]
+    end
+    subgraph L2["能力层"]
+        AI["ai<br/>统一模型 API"]
+        CH["chord<br/>对象运行时"]
+    end
+    subgraph L1["基础层（无内部依赖）"]
+        TEL["telemetry"]
+        SCH["schema"]
+        TUI["tui"]
+        CM["codemode"]
+        MCP["mcp"]
+    end
+
+    CA --> AG
+    CA --> AI
+    CA --> CM
+    CA --> MCP
+    CA --> TUI
+    AG --> AI
+    AG --> SCH
+    AI --> SCH
+    AI --> TEL
+    CH --> SCH
+    CH --> TEL
+    DU --> CH
+    DU --> AI
+    DU --> CM
+    DU --> SCH
+    DU --> TEL
+    ENV --> CH
+    ENV --> DU
+</pre>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+mermaid.initialize({ startOnLoad: true, theme: "default", flowchart: { curve: "basis", nodeSpacing: 45, rankSpacing: 60 } });
+</script>
+</body>
+</html>

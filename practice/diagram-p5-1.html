@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  body { margin: 0; padding: 24px; background: #ffffff; font-family: "Microsoft YaHei", sans-serif; }
+  .box { margin-bottom: 28px; }
+  h3 { font-size: 20px; margin: 0 0 12px 0; color: #222; }
+</style>
+</head>
+<body>
+<div class="box"><h3>图1 单轮工具调用的代码级时序图（read handoff.txt）</h3>
+<pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as 用户
+    participant I as 交互与会话层<br/>interactive-mode.ts
+    participant A as Agent 执行层<br/>agent.ts / agent-loop.ts
+    participant M as 模型请求层<br/>ai 适配器
+    participant R as read 工具
+    participant FS as 文件系统
+
+    U->>I: 输入提示词并回车 onSubmit
+    I->>A: Agent.prompt(userMessage)
+    A->>M: console.error "[P4] Agent 即将请求模型"<br/>streamFunction(model, llmContext)
+    M-->>A: 流式返回 toolCall(read handoff.txt)
+    A->>R: executeToolCalls(...) 调用 read
+    R->>FS: 读取 handoff.txt
+    FS-->>R: 文件内容
+    R-->>A: toolResult 文本
+    A->>A: currentContext.messages.push(result)<br/>console.error "[P4] 工具结果已加入上下文"
+    A->>M: 再次 streamFunction，上下文多了工具结果
+    M-->>A: 最终回答
+    A-->>I: message_end 事件
+    I->>U: 渲染回复
+</pre>
+</div>
+<script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+mermaid.initialize({ startOnLoad: true, theme: "default", flowchart: { curve: "basis" } });
+</script>
+</body>
+</html>
