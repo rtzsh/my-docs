@@ -40,8 +40,12 @@
   `await streamFunction(config.model, llmContext, {...})`，`streamFunction` 来自 `ai` 包，
   由它完成鉴权、HTTP 请求和流式解析；
 - **工具执行**：模型返回的 toolCall 交给 `executeToolCalls(...)`，`read` 工具读文件。
-  这一版 `read` 走的是**整体读取后再返回**（一次工具结果里带着完整文件内容），
-  不是把文件流式塞进上下文——所以日志里"工具结果已加入上下文"是在读完之后才出现的；
+  我核对过 `packages/coding-agent/src/core/tools/read.ts`：默认情况下 `offset`/`limit` 为空、
+  `createReadStream` 可用，走的是 `selectLinesFromStream(...)` **分块流式读取**，
+  并且只把可能显示的行留在内存里（`truncateHead` 的限制），不是一次性 `readFile` 全文载入；
+  只有当环境没有 `createReadStream` 或 range 不规整时才退回 `selectLinesFromBuffer(...)`。
+  但无论走哪条路，读到的内容都是作为**一条**工具结果消息写回上下文，
+  模型不是逐块看到的——所以第二个"即将请求模型"一定在"工具结果已加入上下文"之后；
 - **写回上下文**：第 284-286 行 `currentContext.messages.push(result)` 之后打印第二条日志；
 - **显示回复**：最终消息回到 `interactive-mode.ts`，由它订阅的 `message_end` / `message_update`
   分支渲染到屏幕，用户才看到答案。
